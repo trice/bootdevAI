@@ -1,28 +1,19 @@
 import unittest
-from functions.get_files_info import get_files_info
+from functions.get_file_content import get_file_content
 
-class TestGetFilesInfo(unittest.TestCase):
-    def test_get_files_info(self):
-        result = get_files_info("calculator", ".")
+class TestGetFilesContent(unittest.TestCase):
+    def test_get_file_content(self):
+        content = get_file_content("calculator", "main.py")
+        print(content)
+        
+    def test_get_file_content_with_invalid_path(self):
+        result = get_file_content("calculator", "pkg/calculator.py")
         print(result)
         
-        
-    def test_get_files_info_with_valid_subdirectory(self):
-        result = get_files_info("calculator", "pkg")
+    def test_get_file_content_with_invalid_file(self):
+        result = get_file_content("calculator", "/bin/cat")
         print(result)
-        
-    def test_get_files_info_with_invalid_subdirectory(self):
-        result = get_files_info("calculator", "/bin")
-        print(result)
-        
-    def test_get_files_info_with_directory_outside_relative_path(self):
-        result = get_files_info("calculator", "../")
-        print(result)
-        
-    def test_get_files_info_with_non_directory(self):
-        result = get_files_info("calculator", "main.py")
-        print(result)
-        
+
 
 if __name__ == "__main__":
     unittest.main()
