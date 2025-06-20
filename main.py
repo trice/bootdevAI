@@ -1,6 +1,4 @@
 import os
-from pyexpat.errors import messages
-from tabnanny import verbose
 
 from dotenv import load_dotenv
 from google import genai
