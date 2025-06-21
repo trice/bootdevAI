@@ -1,18 +1,20 @@
 import unittest
-from functions.get_file_content import get_file_content
 
-class TestGetFilesContent(unittest.TestCase):
-    def test_get_file_content(self):
-        content = get_file_content("calculator", "main.py")
-        print(content)
+from functions.write_file import write_file
+
+
+class TestWriteFile(unittest.TestCase):
+    def test_write_file(self):
+        file_content = write_file("calculator", "lorem.txt", "wait, this isn't lorem ipsum")
+        print(file_content)
         
-    def test_get_file_content_with_invalid_path(self):
-        result = get_file_content("calculator", "pkg/calculator.py")
-        print(result)
+    def test_write_file_to_subdirectory(self):
+        file_content = write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet")
+        print(file_content)
         
-    def test_get_file_content_with_invalid_file(self):
-        result = get_file_content("calculator", "/bin/cat")
-        print(result)
+    def test_write_file_to_outside_directory(self):
+        file_content = write_file("calculator", "/tmp/temp.txt", "this should not be allowed")
+        print(file_content)
 
 
 if __name__ == "__main__":
