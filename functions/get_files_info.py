@@ -1,10 +1,15 @@
 import os
 from os import path, listdir
 
-def get_files_info(working_directory, directory=None):    
-    temp_path = path.join(working_directory, directory)
+def get_files_info(working_directory, directory=None):
+    if directory is not None:
+        temp_path = path.join(working_directory, directory)
+    else:
+        temp_path = working_directory
+
+    cwd_name = path.basename(working_directory)
     abs_directory = path.abspath(temp_path)
-    if abs_directory.find(working_directory) < 0:
+    if abs_directory.find(cwd_name) < 0:
         return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
     if not path.isdir(abs_directory):
         return f'Error: "{directory}" is not a directory'
