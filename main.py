@@ -7,11 +7,6 @@ from google.genai import types
 from google.genai.types import GenerateContentConfig, FunctionDeclaration
 from sys import argv
 
-# Local functions that are part of the program
-from functions.run_python import run_python_file
-from functions.get_file_content import get_file_content
-from functions.get_files_info import get_files_info
-from functions.write_file import write_file
 from functions.caller import call_function
 
 if len(argv) < 2:
