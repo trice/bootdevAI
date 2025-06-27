@@ -111,14 +111,30 @@ prompt_config = GenerateContentConfig(tools=[available_functions], system_instru
 api_key = os.environ.get("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key)
 
-answer = client.models.generate_content(model="gemini-2.0-flash-001", contents=messages, config=prompt_config)
-function_call_part = answer.function_calls[0]
+run_count = 0
+while run_count < 20:
+    answer = client.models.generate_content(model="gemini-2.0-flash-001", contents=messages, config=prompt_config)
 
-# Call the generic function caller dispatch
-result = call_function(function_call_part, verbose)
-print(f"-> {result.parts[0].function_response.response}")
+    if answer is not None and answer.candidates is not None:
+        for candidate in answer.candidates:
+            messages.append(candidate.content)
 
-if verbose:
-    print(f"User prompt: {user_prompt}")
-    print(f"Prompt tokens: {answer.usage_metadata.prompt_token_count}")
-    print(f"Response tokens: {answer.usage_metadata.candidates_token_count}")
+        if answer is not None and answer.function_calls is not None:
+            function_call_part = answer.function_calls[0]
+
+            # Call the generic function caller dispatch
+            result = call_function(function_call_part, verbose)
+            if result.parts is not None and result.parts[0] is not None and result.parts[0].function_response is not None:
+                print(f"-> {result.parts[0].function_response.response}")
+                messages.append(result)
+
+            if verbose and answer.usage_metadata is not None:
+                print(f"User prompt: {user_prompt}")
+                print(f"Prompt tokens: {answer.usage_metadata.prompt_token_count}")
+                print(f"Response tokens: {answer.usage_metadata.candidates_token_count}")
+
+        else:
+            print(answer.text)
+            break
+
+        run_count += 1
